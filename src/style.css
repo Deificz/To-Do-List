@@ -1,0 +1,276 @@
+*{
+    font-family: "Roboto";
+    --dark-bg-color: rgb(29, 29, 29);
+    
+    --primary-color: #2b2b2b;
+    --secondary-color: #494949;
+    --accent-color:#e6e6e6;
+
+    --hover-color: #e6e6e6;
+    
+    --white-font: #e6e6e6;
+    --black-font: black;
+
+    transition: all 0.15s ease-in-out;
+}
+
+
+body{
+    margin: 0;
+    width: 0;
+    height: 100vh;
+    width: auto;
+    display: grid;
+    grid-template-columns: .4fr 1fr 1fr;
+    grid-template-rows: .2fr .3fr 1fr;
+    background-color: var(--primary-color);
+    
+}
+
+/* HEADER SECTION */
+#header{
+    display: grid;
+    grid-template-columns: .09fr .09fr;
+    justify-items: center;
+    align-items: center;
+    background-color: var(--dark-bg-color);
+    grid-column: 1 / span 3;
+    color: var(--white-font);
+    
+}
+.logo{
+    height: 75px;
+    width: auto;
+}
+
+#header h1 > span{
+    font-size: .7em;
+}
+
+/*SIDE-BAR SECTION*/
+#side-bar{
+    grid-column: 1/1;
+    grid-row: 2 / span 3;
+    background-color: var(--primary-color);
+}
+#side-bar > .utilities{
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+#side-bar > .others{
+    display: flex;
+    flex-direction: column;
+}
+#side-bar > .plan-list{
+    display: flex;
+}
+.plan{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 1rem;
+}
+
+
+/*side-bar top-section*/
+h2{
+    font-size: 2em;
+    margin-left: 1rem;
+    color: var(--white-font);
+    align-self: center;
+    justify-self: center;
+}
+
+button{
+    cursor: pointer;
+    color: var(--white-font);
+    background-color: var(--primary-color);
+}
+.utility{
+    display: grid;
+    justify-items: left;
+    align-items: left;
+    grid-template-columns: .3fr .78fr;
+    padding: 1.5rem;
+    font-size: 1em;
+    border: none;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    
+}
+.utility:hover{
+    background-color: var(--secondary-color);
+    border-left: 5px solid var(--accent-color);
+}
+
+.utility:focus{
+    background-color: var(--hover-color);
+    color: var(--primary-color);
+    border-left: 10px solid var(--secondary-color);
+}
+
+/*side-bar bottom section*/
+
+.plan-utility{
+    display: grid;
+    justify-items: left;
+    align-items: left;
+    grid-template-columns: .5fr 1fr 1fr;
+    padding: 1.5rem;
+    font-size: 1em;
+    border: none;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 100%;
+}
+
+.plan-utility:hover{
+    background-color: var(--secondary-color);
+    border-left: 5px solid var(--accent-color);
+}
+
+
+.plan-utility:focus{
+    background-color: var(--hover-color);
+    color: var(--primary-color);
+    border-left: 10px solid var(--secondary-color);
+}
+
+.plan-utility > .fa-xmark{
+    justify-self: end;
+    align-self: end;
+    cursor: pointer;
+}
+.fa-xmark:hover{
+    color: red;
+    cursor: pointer;    
+}
+.fa-check:hover{
+    color:green;
+    cursor: pointer;
+}
+.add-plan{
+    align-self: center;
+    justify-self: center;
+    font-size: 2em;
+    padding: .3rem .8rem;
+    border-radius: 10px;
+}
+.plan-modal{
+    position: relative;
+    align-self: center;
+    justify-self: center;
+    padding: .5rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.plan-input{
+    border-radius: 5px;
+}
+
+.confirm-plan,.cancel-plan{
+    all: unset;
+}
+
+.add-plan:hover{
+    background-color: var(--hover-color);
+    color: var(--primary-color);
+    border-radius: 30px;
+}
+
+/*DISPLAY SECTION*/
+#main{
+    grid-column: 2/ span 3;
+    grid-row: 2 / span 3;
+    background-color: var(--accent-color);
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    margin-left: 1rem;
+    padding: 2rem;
+    
+}
+/* main components */
+.display-title{
+    font-size: 2em;
+    margin: 0;
+}
+
+.add-task{
+    margin: 1rem 0;
+    font-size: 1em;
+}
+
+.add-task:hover{
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    font-weight: bold;
+}
+/* modal components */
+
+.task-modal{
+    position: fixed;
+    top: 40%;
+    left: 30%;
+    transform: translate(-50%, -50%) scale(150%);
+}
+
+.form-label{
+    font-size: .8em;
+    margin-bottom: .3rem;
+    font-weight: bolder;
+}
+
+.task-form{
+    display: flex;
+    flex-direction: column;
+}
+.task-buttons{
+    display: flex;
+    justify-content: end;
+}
+
+.task-modal::backdrop{
+    background: rgb(0 0 0 / .4);
+}
+.form-label, .task-buttons{
+    margin-top: .5rem;
+}
+
+.task-note{
+    resize: none;
+    
+}
+
+.confirm-task:hover{
+    color: green;
+    cursor: pointer;    
+}
+.cancel-task:hover{
+    color:red;
+    cursor: pointer;
+}
+.task{
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr 1fr;
+    align-items: center;
+    padding: 0 2rem;
+    margin-top: .5rem;
+    border-top: 2px solid var(--primary-color);
+}
+
+.remove-task{
+    font-size: 1.5em;
+    cursor: pointer;
+}
+.description{
+    justify-self: left;
+}
+.schedule, .remove-task{
+    justify-self: end;
+}
+
+.task > .fa-calendar:hover{
+    color: rgb(72, 135, 252);
+}
