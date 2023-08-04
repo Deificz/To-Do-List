@@ -1,7 +1,10 @@
 import _ from 'lodash';
 import './style.css';
+import iconLogo from '../src/assets/images/logo.png';
 
 window.addEventListener('load', function() {
+    const icon = document.querySelector(`.logo`);
+    icon.setAttribute(`src`,`${iconLogo}`);
     View.displayPlanList();
     View.displayAllTask();
 });
