@@ -13,7 +13,7 @@ const View = (() => {
 
     const displayPlanList = () =>{
         const planPane = document.querySelector(`.plan-list`);
-        
+
         //reset fields
         planPane.innerHTML = "";
 
@@ -29,7 +29,7 @@ const View = (() => {
             iconPlan.classList.add(`fa-list`);
 
             const text = document.createTextNode(plan.title);
-
+            
             const iconRemove = document.createElement(`i`);
             iconRemove.classList.add(`remove-plan`);
             iconRemove.classList.add(`fa-solid`);
@@ -42,35 +42,33 @@ const View = (() => {
 
             planPane.appendChild(btnPlan);
 
+            //Event listeners for the plan
             document.getElementById(`removePlan${i}`).addEventListener(`click`,()=>{
                 Model.removePlan(i);
-                Model.savePlan();
+                displaySwitch(`Home`);
+                displayAllTask();
             });
 
             document.getElementById(`plan${i}`).addEventListener(`click`, () => {
-                if(Model.myPlans[i]){
-                    View.displaySwitch(`${plan.title}`);
-                }
-                else{
-                    View.displaySwitch(`Home`);
-                    View.displayAllTask();
-                }
-                    
+                displaySwitch(`${plan.title}`);
+                displayPlanTask(i+1);
             });
 
-            document.querySelector(`.confirm-task`).addEventListener(`click`, (event) => {
-                event.preventDefault();
+            document.querySelector(`.confirm-task`).addEventListener(`click`, () => {
+                
 
                 const form = document.querySelector(`.task-form`);
 
                 const inputName = document.getElementById(`task-input`).value;
-                const inputNote = document.getElementById(`task-note`).value;
                 const inputSched = document.getElementById(`task-sched`).value;
                 const displayTitle = document.querySelector(`.display-title`).textContent;
                 
                 if(displayTitle === plan.title){
                     if(form.reportValidity()){
-                        if(inputName && inputNote && inputSched){
+                        if(inputName && inputSched){
+                            Model.addTaskPlan(i+1);
+                            Model.saveTask();
+                            displayPlanTask(i+1);
                             document.querySelector(`.task-modal`).close();
                         }
                     }
@@ -84,46 +82,113 @@ const View = (() => {
 
         //reset fields
         windowDisplay.innerHTML = ``;
+        
+      
+            for(let i=0; i < Model.myTasks[0].length; i++){
+                const task = Model.myTasks[0][i];
+                const task_div = document.createElement(`div`);
+                task_div.classList.add(`task`);
 
-        for(let i=0; i < Model.myTasks.length; i++){
-            const task = Model.myTasks[i];
+                const name = document.createElement(`h3`)
+                name.textContent = task.name;
 
-            const task_div = document.createElement(`div`);
-            task_div.classList.add(`task`);
+                const note = document.createElement(`p`);
+                note.textContent = task.note;
+                note.classList.add(`description`);
 
-            const name = document.createElement(`h3`)
-            name.textContent = task.name;
+                const sched = document.createElement(`h3`);
+                sched.textContent = task.schedule;
+                sched.classList.add(`schedule`);
 
-            const note = document.createElement(`p`);
-            note.textContent = task.note;
-            note.classList.add(`description`);
+                const iconRemove = document.createElement(`i`);
+                iconRemove.classList.add(`remove-task`);
+                iconRemove.classList.add(`fa-solid`);
+                iconRemove.classList.add(`fa-xmark`);
+                iconRemove.setAttribute(`id`,`removeTaskHome${i}`);
+                
+                task_div.appendChild(name);
+                task_div.appendChild(note);
+                task_div.appendChild(sched);
+                task_div.appendChild(iconRemove);
 
-            const sched = document.createElement(`h3`);
-            sched.textContent = task.schedule;
-            sched.classList.add(`schedule`);
+                windowDisplay.appendChild(task_div);
 
-            const iconRemove = document.createElement(`i`);
-            iconRemove.classList.add(`remove-task`);
-            iconRemove.classList.add(`fa-solid`);
-            iconRemove.classList.add(`fa-xmark`);
-            iconRemove.setAttribute(`id`,`removeTask${i}`);
-
-            task_div.appendChild(name);
-            task_div.appendChild(note);
-            task_div.appendChild(sched);
-            task_div.appendChild(iconRemove);
-
-            windowDisplay.appendChild(task_div);
-
-            document.getElementById(`removeTask${i}`).addEventListener(`click`, ()=>{
-               Model.removeTask(i);
-               Model.saveTask();
-               View.displayAllTask();
-            })
-        }
-
+                document.getElementById(`removeTaskHome${i}`).addEventListener(`click`, ()=>{
+                    Model.removeTaskHome(0,i);
+                })
+            }
+        
+            for(let i = 1; i < Model.myTasks.length; i++){
+                for(let j=0; j < Model.myTasks[i].length; j++){
+                    const task = Model.myTasks[i][j];
+                    const task_div = document.createElement(`div`);
+                    task_div.classList.add(`task`);
+    
+                    const name = document.createElement(`h3`)
+                    name.textContent = task.name;
+    
+                    const note = document.createElement(`p`);
+                    note.textContent = task.note;
+                    note.classList.add(`description`);
+    
+                    const sched = document.createElement(`h3`);
+                    sched.textContent = task.schedule;
+                    sched.classList.add(`schedule`);
+    
+                   
+                    task_div.appendChild(name);
+                    task_div.appendChild(note);
+                    task_div.appendChild(sched);
+    
+                    windowDisplay.appendChild(task_div);
+    
+                }
+            }
+            
     }
     
+    const displayPlanTask = (plan) => {
+        const windowDisplay = document.querySelector(`.display`);
+
+        windowDisplay.innerHTML = "";
+        
+            for(let i=0; i < Model.myTasks[plan].length; i++){
+                const task = Model.myTasks[plan][i];
+                const task_div = document.createElement(`div`);
+                task_div.classList.add(`task`);
+
+                const name = document.createElement(`h3`)
+                name.textContent = task.name;
+
+                const note = document.createElement(`p`);
+                note.textContent = task.note;
+                note.classList.add(`description`);
+
+                const sched = document.createElement(`h3`);
+                sched.textContent = task.schedule;
+                sched.classList.add(`schedule`);
+
+                const iconRemove = document.createElement(`i`);
+                iconRemove.classList.add(`remove-task`);
+                iconRemove.classList.add(`fa-solid`);
+                iconRemove.classList.add(`fa-xmark`);
+                iconRemove.setAttribute(`id`,`removeTaskPlan${i}`);
+
+                task_div.appendChild(name);
+                task_div.appendChild(note);
+                task_div.appendChild(sched);
+                task_div.appendChild(iconRemove);
+
+                windowDisplay.appendChild(task_div);
+
+                document.getElementById(`removeTaskPlan${i}`).addEventListener(`click`, ()=>{
+                    Model.removeTaskPlan(plan,i);
+                })
+            }
+        
+        
+    }
+
     const displaySwitch = (title) => {
         const mainDisplay = document.getElementById(`main`);
         const display_title = document.querySelector(`.display-title`);
@@ -180,8 +245,8 @@ const View = (() => {
         
 
         for(let i = 0; i < Model.myTasks.length; i++){
-            const task = Model.myTasks[i];
-            console.log(task.schedule);
+            for(let j = 0; j < Model.myTasks[i].length; j++){
+                const task = Model.myTasks[i][j];
 
             if(task.schedule === dateToday){
                 
@@ -200,9 +265,7 @@ const View = (() => {
                 sched.classList.add(`schedule`);
 
                 const iconRemove = document.createElement(`i`);
-                iconRemove.classList.add(`remove-task`);
-                iconRemove.classList.add(`fa-solid`);
-                iconRemove.classList.add(`fa-xmark`);
+               
                 iconRemove.setAttribute(`id`,`task${i}`);
 
                 task_div.appendChild(name);
@@ -213,10 +276,10 @@ const View = (() => {
                 windowDisplay.appendChild(task_div);
 
                 document.getElementById(`task${i}`).addEventListener(`click`, ()=>{
-                    Model.removeTask(i);
+                    Model.removeTaskHome(i);
                 })
             }
-           
+            }
         }
     }
 
@@ -225,7 +288,7 @@ const View = (() => {
         
         //reset fields
         windowDisplay.innerHTML = ``;
-        
+       
         let days = [];
 
         function getDatesInWeek() {
@@ -252,50 +315,49 @@ const View = (() => {
           });
 
         for(let i = 0; i < Model.myTasks.length; i++){
-            const task = Model.myTasks[i];
-            console.log(task.schedule);
-
-            for(let j = 0; j < 7; j++){
-                if(task.schedule === days[j]){
-                
-                    const task_div = document.createElement(`div`);
-                    task_div.classList.add(`task`);
-    
-                    const name = document.createElement(`h3`)
-                    name.textContent = task.name;
-    
-                    const note = document.createElement(`p`);
-                    note.textContent = task.note;
-                    note.classList.add(`description`);
-    
-                    const sched = document.createElement(`h3`);
-                    sched.textContent = task.schedule;
-                    sched.classList.add(`schedule`);
-    
-                    const iconRemove = document.createElement(`i`);
-                    iconRemove.classList.add(`remove-task`);
-                    iconRemove.classList.add(`fa-solid`);
-                    iconRemove.classList.add(`fa-xmark`);
-                    iconRemove.setAttribute(`id`,`task${i}`);
-    
-                    task_div.appendChild(name);
-                    task_div.appendChild(note);
-                    task_div.appendChild(sched);
-                    task_div.appendChild(iconRemove);
-    
-                    windowDisplay.appendChild(task_div);
-    
-                    document.getElementById(`task${i}`).addEventListener(`click`, ()=>{
-                        Model.removeTask(i);
-                    })
+            for(let j = 0; j < Model.myTasks[i].length; j++){
+                const task = Model.myTasks[i][j];
+                for(let k = 0; k < 7; k++){
+                    if(task.schedule === days[k]){
+                    
+                        const task_div = document.createElement(`div`);
+                        task_div.classList.add(`task`);
+        
+                        const name = document.createElement(`h3`)
+                        name.textContent = task.name;
+        
+                        const note = document.createElement(`p`);
+                        note.textContent = task.note;
+                        note.classList.add(`description`);
+        
+                        const sched = document.createElement(`h3`);
+                        sched.textContent = task.schedule;
+                        sched.classList.add(`schedule`);
+        
+                        const iconRemove = document.createElement(`i`);
+                        iconRemove.setAttribute(`id`,`task${j}`);
+        
+                        task_div.appendChild(name);
+                        task_div.appendChild(note);
+                        task_div.appendChild(sched);
+                        task_div.appendChild(iconRemove);
+        
+                        windowDisplay.appendChild(task_div);
+        
+                        document.getElementById(`task${j}`).addEventListener(`click`, ()=>{
+                            Model.removeTaskHome(i, j);
+                        })
+                    }
                 }
             }
-           
+        
         }
     }
+
     return {
         displayPlanList,
         displayAllTask,
+        displayPlanTask,
         displaySwitch,
         displayTodayTask,
         displayWeekTask,
@@ -349,17 +411,24 @@ const Model = (() => {
 
     const removePlan = (plan) => {
         myPlans.splice(plan, 1);
+        myTasks.splice(plan+1,1);
         View.displayPlanList();
+        saveTask();
+        savePlan();
     }
 
-    const addTask = () =>{
+    const addTaskHome = () =>{
         const taskName = document.getElementById(`task-input`).value;
         const taskNote = document.getElementById(`task-note`).value;
         const taskSched = document.getElementById(`task-sched`).value;
 
         let task = new __Task(taskName, taskNote, taskSched);
 
-        myTasks.push(task);
+        if (!Array.isArray(myTasks[0])) {
+            myTasks[0] = [];
+        }
+
+        myTasks[0].push(task);
 
         //Reset input fields
         document.getElementById(`task-input`).value = ``;
@@ -367,8 +436,35 @@ const Model = (() => {
         document.getElementById(`task-sched`).value = ``;
     }
 
-    const removeTask = (index) =>{
-        myTasks.splice(index, 1);
+    const addTaskPlan = (plan) => {
+        const taskName = document.getElementById(`task-input`).value;
+        const taskNote = document.getElementById(`task-note`).value;
+        const taskSched = document.getElementById(`task-sched`).value;
+
+        let task = new __Task(taskName, taskNote, taskSched);
+
+        if(!Array.isArray(myTasks[plan])){
+            myTasks[plan] = [];
+        }
+
+        myTasks[plan].push(task);
+
+        document.getElementById(`task-input`).value = ``;
+        document.getElementById(`task-note`).value = ``;
+        document.getElementById(`task-sched`).value = ``;
+    }
+
+    const removeTaskHome = (index, task) =>{
+        myTasks[index].splice(task, 1);
+        saveTask();
+        View.displayAllTask();
+
+    }
+
+    const removeTaskPlan = (index, task) => {
+        myTasks[index].splice(task,1);
+        saveTask();
+        View.displayPlanTask(index);
     }
 
     const savePlan = () => {
@@ -385,9 +481,11 @@ const Model = (() => {
         myPlans,
         myTasks,
         addPlan,
-        addTask,
+        addTaskHome,
+        addTaskPlan,
         removePlan,
-        removeTask,
+        removeTaskHome,
+        removeTaskPlan,
         savePlan,
         saveTask,
     }
@@ -398,8 +496,8 @@ const Model = (() => {
 const Controller = (() => {
 
     //handle clicks for confirm buttons
-    document.querySelector(`.confirm-plan`).addEventListener(`click`, (event)=>{
-        event.preventDefault();
+    document.querySelector(`.confirm-plan`).addEventListener(`click`, ()=>{
+        
 
         const form = document.querySelector(`.plan-form`);
         const userInput = document.getElementById(`plan-input`).value;
@@ -409,21 +507,21 @@ const Controller = (() => {
                 Model.addPlan();
                 Model.savePlan();
                 View.displayPlanList();
+                document.querySelector(`.plan-modal`).close();
             }
         }
     });
-    document.querySelector(`.confirm-task`).addEventListener(`click`, (event) => {
-        event.preventDefault();
+    document.querySelector(`.confirm-task`).addEventListener(`click`, () => {
+        
         const form = document.querySelector(`.task-form`);
 
         const inputName = document.getElementById(`task-input`).value;
-        const inputNote = document.getElementById(`task-note`).value;
         const inputSched = document.getElementById(`task-sched`).value;
         const displayTitle = document.querySelector(`.display-title`).textContent;
         if(displayTitle === `Home`){
             if(form.reportValidity()){
-                if(inputName && inputNote && inputSched){
-                    Model.addTask();
+                if(inputName && inputSched){
+                    Model.addTaskHome();
                     Model.saveTask();
                     View.displayAllTask();
                     document.querySelector(`.task-modal`).close();
@@ -437,11 +535,11 @@ const Controller = (() => {
     document.querySelector(`.home`).addEventListener(`click`, ()=>{
         View.displaySwitch(`Home`);
         View.displayAllTask();
+        console.log(Model.myTasks);
     });
     document.querySelector(`.today`).addEventListener(`click`, ()=>{
         View.displaySwitch(`Today`);
         View.displayTodayTask();
-        console.log(Model.myPlans);
     });
     document.querySelector(`.week`).addEventListener(`click`, ()=>{
         View.displaySwitch(`This Week`);
