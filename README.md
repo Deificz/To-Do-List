@@ -1,6 +1,6 @@
 # To-Do-List
 
-A web based To-Do-List
+A web based To-Do-List wherein you can list your upcoming tasks or projects.
 
 Usage:
 - To add task click the Add Task button
