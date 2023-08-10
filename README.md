@@ -1,6 +1,6 @@
 # To-Do-List
 
-A web based To-Do-List using HTML, CSS, Vanilla JS
+A web based To-Do-List
 
 Usage:
 - To add task click the Add Task button
