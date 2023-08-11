@@ -11,5 +11,6 @@ Tech stack used:
   -  CSS
   -  Vanilla JavaScript
   -  localStorage
+  -  Webpack
 
 **Live preview:** https://deificz.github.io/To-Do-List/
