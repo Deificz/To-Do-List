@@ -13,6 +13,4 @@ Tech stack used:
   -  localStorage
   -  Webpack
 
-Available for Desktop only
-
 **Live preview:** https://deificz.github.io/To-Do-List/
