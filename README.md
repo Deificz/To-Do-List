@@ -12,5 +12,7 @@ Tech stack used:
   -  Vanilla JavaScript
   -  localStorage
   -  Webpack
+#
 
-**Live preview:** https://deificz.github.io/To-Do-List/
+### **LIVE PREVIEW:** https://deificz.github.io/To-Do-List/
+
